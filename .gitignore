@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# GitHub Pages deployment branch
+gh-pages

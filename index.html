@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI 姿勢糾正助理</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <h1>AI 姿勢糾正助理</h1>
+    <p>請使用手機側面對準鏡頭，讓系統判斷你的肩頸與背部姿勢。</p>
+
+    <div class="camera-card">
+      <video id="video" playsinline autoplay muted></video>
+      <canvas id="overlay"></canvas>
+    </div>
+
+    <div class="status-panel">
+      <div class="status-label">即時分析結果</div>
+      <div id="feedback" class="feedback">正在啟動相機...</div>
+    </div>
+
+    <button id="startButton">啟動攝影機</button>
+    <p class="hint">若無法啟動，請確認已允許瀏覽器使用相機。</p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.12.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection@0.0.9/dist/pose-detection.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
