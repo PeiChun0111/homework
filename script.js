@@ -12,8 +12,8 @@ async function initDetector() {
   feedback.textContent = '正在載入姿勢偵測模型...';
   const model = poseDetection.SupportedModels.MoveNet;
   const detectorConfig = {
-    runtime: 'tfjs',
-    modelType: 'lightning',
+    modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING,
+    enableSmoothing: true,
   };
 
   try {
