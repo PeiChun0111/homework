@@ -10,14 +10,14 @@ startButton.disabled = true;
 async function initDetector() {
   console.log('[Pose] initDetector start');
   feedback.textContent = '正在載入姿勢偵測模型...';
-  const model = poseDetection.SupportedModels.BlazePose;
+  const model = poseDetection.SupportedModels.MoveNet;
   const detectorConfig = {
     runtime: 'tfjs',
-    modelType: 'full',
-    enableSmoothing: true,
+    modelType: 'lightning',
   };
 
   try {
+    await tf.ready();
     detector = await poseDetection.createDetector(model, detectorConfig);
     console.log('[Pose] detector loaded', detector);
     feedback.textContent = '模型載入完成，請點選「啟動攝影機」。';
@@ -48,9 +48,18 @@ async function startCamera() {
       audio: false,
     });
     video.srcObject = stream;
+
+    await new Promise((resolve) => {
+      if (video.readyState >= 2) {
+        resolve();
+      } else {
+        video.onloadedmetadata = () => resolve();
+      }
+    });
+
     await video.play();
-    overlay.width = video.videoWidth;
-    overlay.height = video.videoHeight;
+    overlay.width = video.videoWidth || 640;
+    overlay.height = video.videoHeight || 800;
     runPoseLoop();
   } catch (error) {
     console.error(error);
@@ -166,7 +175,7 @@ async function runPoseLoop() {
   detectFrame();
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('load', () => {
   startButton.disabled = true;
   startButton.addEventListener('click', startCamera);
   initDetector();
