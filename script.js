@@ -8,6 +8,7 @@ let stream = null;
 startButton.disabled = true;
 
 async function initDetector() {
+  console.log('[Pose] initDetector start');
   feedback.textContent = '正在載入姿勢偵測模型...';
   const model = poseDetection.SupportedModels.BlazePose;
   const detectorConfig = {
@@ -18,16 +19,18 @@ async function initDetector() {
 
   try {
     detector = await poseDetection.createDetector(model, detectorConfig);
+    console.log('[Pose] detector loaded', detector);
     feedback.textContent = '模型載入完成，請點選「啟動攝影機」。';
     startButton.disabled = false;
   } catch (error) {
-    console.error(error);
+    console.error('[Pose] detector load failed', error);
     feedback.textContent = '模型載入失敗，請檢查網路或重新整理頁面。';
     startButton.disabled = true;
   }
 }
 
 async function startCamera() {
+  console.log('[Pose] startCamera called, detector:', detector);
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
     feedback.textContent = '您的瀏覽器不支援相機功能。請使用新版 Chrome 或 Edge。';
     return;
@@ -163,5 +166,8 @@ async function runPoseLoop() {
   detectFrame();
 }
 
-startButton.addEventListener('click', startCamera);
-initDetector();
+window.addEventListener('DOMContentLoaded', () => {
+  startButton.disabled = true;
+  startButton.addEventListener('click', startCamera);
+  initDetector();
+});
